@@ -1,0 +1,21 @@
+.container {
+    margin-top: 50px;
+}
+
+.content {
+    width: 100%;
+}
+
+.myrow {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    flex: 1;
+}
+
+.main {
+    flex: 5;
+    margin-top: 50px;
+}
