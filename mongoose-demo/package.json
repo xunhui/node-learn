@@ -1,5 +1,5 @@
 {
-  "name": "nodeLearn",
+  "name": "mongoose-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,11 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "art-template": "^4.13.2",
-    "body-parser": "^1.19.0",
-    "bootstrap": "^3.3.7",
-    "express": "^4.16.4",
-    "express-art-template": "^1.0.1",
     "mongoose": "^5.5.5"
   }
 }
