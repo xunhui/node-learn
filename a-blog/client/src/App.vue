@@ -1,21 +1,25 @@
 <template>
-    <div>
-        {{ word }}
-    </div>
+  <div class="a-blog">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
-    data () {
-        return {
-            word: 'I am root vue component'
-        }
-    }
-}
+  data() {
+    return {};
+  }
+};
 </script>
 
 <style>
-    div {
-        color: orange;
-    }
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.a-blog {
+  height: 100%;
+  width: 100%;
+}
 </style>
