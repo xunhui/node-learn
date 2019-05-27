@@ -10,10 +10,13 @@ module.exports = {
     },
     devServer: {
         //解决跨域访问问题
-        proxyTable: {
+        proxy: {
             '/api': {
-                target: 'http://localhost:8080/EduAdminSystemCode',
-                changeOrigin: true
+                target: 'http://localhost:5000/',
+                pathRewrite: {'^/api': ''},// 这个参数的目的是给代理命名后，在访问时把命名删除掉。
+                //路径重写，也就是说会修改最终请求的API路径。 比如访问的API路径：/api/users, 设置pathRewrite: {'^/api' : ''},后，最终代理访问的路径：http://localhost:5000/users， 
+                changeOrigin: true, // target是域名的话，需要这个参数
+                secure: false          // 设置支持https协议的代理
             }
         },
         contentBase: path.join(__dirname, "client/dist"), //本地服务器所加载的页面所在的目录

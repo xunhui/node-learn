@@ -5,7 +5,7 @@
             <router-view></router-view>
         </div> -->
         <div class="post">
-            <post-list></post-list>
+            <post-list v-for="item in postListData" :key="item.id" :listData="item" @refreshList="getPostLists"></post-list>
         </div>
     </div>
 </template>
@@ -13,19 +13,33 @@
 <script>
 import topBar from "../components/topBar.vue";
 import postList from '../components/postList.vue'
+import api from '../api/api.js'
 
 export default {
     data () {
         return {
-            mytitle: '这里是帖子列表啊啊啊'
+            mytitle: '这里是帖子列表啊啊啊',
+            postListData: []
         }
     },
     components: {
         topBar,
         postList
     },
-    mounted () {
+    computed: {
         
+    },
+    methods: {
+        getPostLists () {
+            api.aGet('/api/post/getPostList')
+            .then((res) => {
+                console.log(res.data)
+                this.postListData = res.data.postLists
+            })
+        }
+    },
+    mounted () {
+        this.getPostLists()
     }
 }
 </script>

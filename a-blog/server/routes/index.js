@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 
 // 连接数据库
-mongoose.connect('mongodb://localhost/test', { useMongoClient: true })
+mongoose.connect('mongodb://127.0.0.1:27017/blog', { useNewUrlParser: true })
 
 //渲染根页面
 router.get('/', (req, res) => {

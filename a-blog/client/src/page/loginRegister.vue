@@ -8,8 +8,8 @@
             <span slot="label">登录</span>
             <el-form :model="userLoginInfo" status-icon ref="userLoginInfo" lable-position="top">
               <!-- 登录 -->
-              <el-form-item label prop="phoneNum" :error="phoneNumError">
-                <el-input v-model="userLoginInfo.phoneNum" size="large" placeholder="请输入手机号"></el-input>
+              <el-form-item label prop="phone" :error="phoneNumError">
+                <el-input v-model="userLoginInfo.phone" size="large" placeholder="请输入手机号"></el-input>
               </el-form-item>
 
               <el-form-item label prop="password" :error="pswError">
@@ -75,8 +75,7 @@
 
 <script type="text/javascript">
 import crypto from "crypto-js";
-//import api from "@/api/devAPI.js";
-// import api from "@/api/api.js";
+import api from "../api/api.js";
 
 const TIME_COUNT = 60; //获取验证码倒计时
 //数据格式筛选
@@ -126,16 +125,36 @@ export default {
   },
   methods: {
     loginSubmit: function(userLoginInfo) {
-      this.phoneNumError = "";
-      this.pswError = "";
-    },
-    //注册
-    register() {
-      this.phoneNumError = "";
-      let userRegInfo = {
-        phoneNum: this.userRegInfo.phone,
-        password: crypto.MD5(this.userRegInfo.password1).toString()
-      };
+      let params = {
+        phone: this.userLoginInfo.phone,
+        password: crypto.MD5(this.userLoginInfo.password).toString()
+      }
+      
+      api.aPost('/api/user/login', params)
+        .then((res) => {
+          console.log(res)
+          if (res.data.code == 0) {
+            this.$message({
+              showClose: true,
+              message: '登录成功'
+            })
+
+            //注册成功，跳转首页
+            this.$router.push('/')
+
+            //设置 store 中的用户信息
+            this.$store.commit('setUserInfo', res.data.result)
+          } else if (res.data.code == -1) {
+            this.$message({
+              showClose: true,
+              message: '手机号或密码错误',
+              type: 'error'
+            })
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     //找回密码
     findPSW() {
@@ -147,7 +166,37 @@ export default {
     },
     //点击注册
     regSubmit: function() {
-      
+       let params = {
+        phone: this.userRegInfo.phone,
+        password: crypto.MD5(this.userRegInfo.password).toString(),
+        nickname: this.userRegInfo.nickname
+      }
+
+      api.aPost('/api/user/register', params)
+        .then((res) => {
+          console.log(res)
+          if (res.data.code == 0) {
+            this.$message({
+              showClose: true,
+              message: '注册成功'
+            })
+
+            //注册成功，跳转首页
+            this.$router.push('/')
+
+            //设置 store 中的用户信息
+            this.$store.commit('setUserInfo', res.data.result)
+          } else if (res.data.code == 1) {
+            this.$message({
+              showClose: true,
+              message: res.data.message,
+              type: 'warning'
+            })
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     //点击修改密码
     forgetSubmit: function(forgetInfo) {}
